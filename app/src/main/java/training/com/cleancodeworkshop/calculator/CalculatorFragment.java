@@ -10,21 +10,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import training.com.cleancodeworkshop.R;
 
-/**
- * Created by Semicolon07 on 2/9/2017 AD.
- */
-
-public class CalculatorFragment extends Fragment{
-    private EditText firstNumberEditText;
-    private EditText secondNumberEditText;
-    private TextView resultTextView;
-    private Button plusButton,minusButton,multiplyButton,divideButton;
+public class CalculatorFragment extends Fragment {
+    @BindView(R.id.firstNumber_editText)
+    EditText firstNumberEditText;
+    @BindView(R.id.secondNumber_editText)
+    EditText secondNumberEditText;
+    @BindView(R.id.result_textView)
+    TextView resultTextView;
+    private Button plusButton, minusButton, multiplyButton, divideButton;
     private String firstNumber;
     private String secondNumber;
 
-    public static CalculatorFragment newInstance(){
+    public static CalculatorFragment newInstance() {
         CalculatorFragment fragment = new CalculatorFragment();
         return fragment;
     }
@@ -38,24 +40,13 @@ public class CalculatorFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_calculator, container, false);
-        initInstances(rootView,savedInstanceState);
+        initInstances(rootView, savedInstanceState);
+        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     private void initInstances(View rootView, Bundle savedInstanceState) {
-        firstNumberEditText = (EditText) rootView.findViewById(R.id.firstNumber_editText);
-        secondNumberEditText = (EditText) rootView.findViewById(R.id.secondNumber_editText);
-        resultTextView = (TextView) rootView.findViewById(R.id.result_textView);
-        plusButton = (Button) rootView.findViewById(R.id.plus_button);
-        minusButton = (Button) rootView.findViewById(R.id.minus_button);
-        multiplyButton = (Button) rootView.findViewById(R.id.minus_button);
-        divideButton = (Button) rootView.findViewById(R.id.divide_button);
-        // Bind Listener
-        plusButton.setOnClickListener(onCalculatorButtonClick);
-        minusButton.setOnClickListener(onCalculatorButtonClick);
-        multiplyButton.setOnClickListener(onCalculatorButtonClick);
-        divideButton.setOnClickListener(onCalculatorButtonClick);
-
+        System.out.println("eiei");
     }
 
     private void prepareInputText() {
@@ -63,23 +54,19 @@ public class CalculatorFragment extends Fragment{
         secondNumber = secondNumberEditText.getText().toString();
     }
 
-    View.OnClickListener onCalculatorButtonClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.plus_button:
-                    prepareInputText();
-                    break;
-                case R.id.minus_button:
-                    break;
-                case R.id.multiply_button:
-                    break;
-                case R.id.divide_button:
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
+    @OnClick({R.id.plus_button, R.id.minus_button, R.id.multiply_button, R.id.divide_button})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.plus_button:
+                prepareInputText();
+                break;
+            case R.id.minus_button:
+                break;
+            case R.id.multiply_button:
+                break;
+            case R.id.divide_button:
+                break;
+        }
+    }
 }
