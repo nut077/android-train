@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,16 +14,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import training.com.cleancodeworkshop.R;
 
-public class CalculatorFragment extends Fragment {
+public class CalculatorFragment extends Fragment implements CalculatorContract.View{
     @BindView(R.id.firstNumber_editText)
     EditText firstNumberEditText;
     @BindView(R.id.secondNumber_editText)
     EditText secondNumberEditText;
     @BindView(R.id.result_textView)
     TextView resultTextView;
-    private Button plusButton, minusButton, multiplyButton, divideButton;
+
     private String firstNumber;
     private String secondNumber;
+    private CalculatorPresenter presenter;
 
     public static CalculatorFragment newInstance() {
         CalculatorFragment fragment = new CalculatorFragment();
@@ -34,6 +34,7 @@ public class CalculatorFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter = new CalculatorPresenter();
     }
 
     @Nullable
@@ -45,8 +46,14 @@ public class CalculatorFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        presenter.setView(this);
+    }
+
     private void initInstances(View rootView, Bundle savedInstanceState) {
-        System.out.println("eiei");
+
     }
 
     private void prepareInputText() {
@@ -60,6 +67,7 @@ public class CalculatorFragment extends Fragment {
         switch (view.getId()) {
             case R.id.plus_button:
                 prepareInputText();
+                presenter.onPlusButtonClick(firstNumber, secondNumber);
                 break;
             case R.id.minus_button:
                 break;
@@ -68,5 +76,27 @@ public class CalculatorFragment extends Fragment {
             case R.id.divide_button:
                 break;
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
+
+    }
+
+    @Override
+    public void showResult(String text) {
+        resultTextView.setText(text);
     }
 }
