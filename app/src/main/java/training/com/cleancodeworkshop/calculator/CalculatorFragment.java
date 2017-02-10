@@ -9,12 +9,16 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import training.com.cleancodeworkshop.R;
+import training.com.cleancodeworkshop.calculator.di.DaggerCalculatorComponent;
+import training.com.cleancodeworkshop.di.DaggerAppComponent;
 
-public class CalculatorFragment extends Fragment implements CalculatorContract.View{
+public class CalculatorFragment extends Fragment implements CalculatorContract.View {
     @BindView(R.id.firstNumber_editText)
     EditText firstNumberEditText;
     @BindView(R.id.secondNumber_editText)
@@ -24,7 +28,9 @@ public class CalculatorFragment extends Fragment implements CalculatorContract.V
 
     private String firstNumber;
     private String secondNumber;
-    private CalculatorPresenter presenter;
+
+    @Inject
+    CalculatorPresenter presenter;
 
     public static CalculatorFragment newInstance() {
         CalculatorFragment fragment = new CalculatorFragment();
@@ -34,7 +40,11 @@ public class CalculatorFragment extends Fragment implements CalculatorContract.V
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new CalculatorPresenter();
+        DaggerCalculatorComponent
+                .builder()
+                .appComponent(DaggerAppComponent.create())
+                .build()
+                .inject(this);
     }
 
     @Nullable
